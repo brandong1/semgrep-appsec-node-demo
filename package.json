@@ -1,0 +1,20 @@
+{
+  "name": "semgrep-appsec-node-demo",
+  "version": "1.0.0",
+  "description": "Semgrep AppSec demo — Node.js project management API",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-fetch": "^2.7.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
