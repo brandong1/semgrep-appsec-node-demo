@@ -1,7 +1,5 @@
-# Claude Code Prompts
-
-Type these into Claude Code to generate each vulnerable endpoint live during the demo.
-If the AI writes a safe version, use the fallback prompt below it.
+#
+If the LLM writes a safe version, use the fallback prompt below it.
 
 ---
 

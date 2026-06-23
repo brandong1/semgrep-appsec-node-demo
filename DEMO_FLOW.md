@@ -16,7 +16,7 @@
 >
 > **Multimodal** — instead of a generic CWE description, you get an AI explanation of the finding in the context of your actual code.
 >
-> **Memories** — you can teach Semgrep how your team fixes things. Not a generic recommendation — the exact function, the exact pattern, specific to this repo. Every future finding gets that guidance baked in.
+> **Memories** — you can teach Semgrep how your team fixes things. Reply to a Semgrep PR comment in GitHub and it becomes a Memory. Or use Customize Fix in the AppSec Platform. Either way, the exact function, the exact pattern — specific to this repo — gets baked into every future Suggested Fix.
 >
 > **Suggested Fix** — the fix shows up right in the PR comment. One click to apply.
 >
@@ -98,11 +98,9 @@ Follow up:
 
 ---
 
-## Scenario 2 — Workspace Isolation / IDOR (4 min)
+## Scenario 2 — Workspace Isolation / IDOR + PR Comment → Memory (5 min)
 
-*Claude Code writes a shareable task link endpoint. No workspace scoping. Memory shapes the fix.*
-
-**Pre-check:** Confirm the workspace isolation Memory is set.
+*Claude Code writes a shareable task link endpoint with no workspace scoping. A PR comment becomes a Memory. That Memory shapes the Suggested Fix.*
 
 ### Step 1 — Ask Claude Code
 
@@ -122,13 +120,29 @@ gh pr create \
 **Talk track:**
 > "Shareable task links — totally reasonable feature. Claude Code uses `db.getTask(id)`. No workspace check. Any authenticated user in any workspace can read any task. That's a tenant isolation violation."
 
-### Step 2 — Show the Memory-shaped Suggested Fix
+### Step 2 — SMS posts the finding. Reply to the PR comment to create a Memory.
 
-Once the SMS finding appears:
+Once the Semgrep PR comment appears, **reply to it directly in GitHub** with:
 
-> "Look at the Multimodal explanation. It doesn't say 'consider adding an authorization check.' It says: use `db.getTaskForWorkspace(taskId, req.user.workspaceId)`. That's the exact function in this codebase — because of the Memory we set for this repo."
+> "In this repo, all task reads must be scoped to req.user.workspaceId. Use db.getTaskForWorkspace(taskId, req.user.workspaceId) instead of db.getTask(taskId)."
 
-> "Memories turn a generic IDOR finding into a repo-specific fix recommendation. Every developer on your team gets the same guidance, specific to how your codebase is structured."
+**Talk track:**
+
+> "Semgrep posted the finding as a PR comment. I'm going to reply to it right here in GitHub — the same way you'd reply to any code review comment. I'm telling Semgrep how this team fixes this class of bug."
+
+Point to the reply you just posted.
+
+> "Semgrep picks up that reply and converts it into a Memory scoped to this repo. I didn't go to the AppSec Platform. I didn't fill out a form. I replied to a PR comment — the way developers already communicate — and that became a persistent, reusable piece of remediation guidance."
+
+Wait a moment, then navigate to Semgrep AppSec Platform → **Assistant** → **Memories** to show the Memory was created.
+
+> "There it is. That reply is now a Memory. Every future finding of this type in this repo will get a Suggested Fix that references `db.getTaskForWorkspace` — not a generic description, the exact function your team uses."
+
+### Step 3 — Show the Memory-shaped Suggested Fix
+
+Point to the Suggested Fix on the finding:
+
+> "The Suggested Fix already reflects it. You wrote one PR comment. Semgrep turned it into guidance that applies to every developer on this team, on every future PR, for this class of bug."
 
 ---
 
@@ -233,7 +247,7 @@ gh pr create \
 >
 > You used Claude Code to write five endpoints. Every one had a security issue — command injection, broken tenant isolation, SQL injection, open redirect, hardcoded secrets, SSRF. All written by an AI. All caught by Semgrep.
 >
-> You didn't run a scan. You didn't configure a workflow. You opened PRs. Semgrep handled the rest — findings in the PR comment, Multimodal explanations shaped by your repo's patterns, Suggested Fixes, an Autofix PR, and all of it accessible from inside Claude Code via Guardian.
+> You didn't run a scan. You didn't configure a workflow. You opened PRs. Semgrep handled the rest — findings in the PR comment, Multimodal explanations shaped by your repo's patterns, Suggested Fixes, an Autofix PR, and all of it accessible from inside Claude Code via Guardian. And when you replied to that PR comment in Scenario 2, that reply became a Memory — no platform UI required, just a code review comment.
 >
 > That's the workflow. Any questions?"
 
@@ -258,7 +272,7 @@ Keeps the demo moving. Reinforces the Claude Code integration.
 |---|---|---|---|
 | Intro | 0:00–0:02 | — | Feature overview |
 | Command injection | 0:02–0:07 | `exec(branch)` | SMS catches it, Guardian pulls it into Claude Code |
-| IDOR | 0:07–0:11 | `db.getTask()` no workspace | Memory-shaped Suggested Fix |
+| IDOR | 0:07–0:12 | `db.getTask()` no workspace | PR comment → Memory → Memory-shaped Suggested Fix |
 | SQL injection | 0:11–0:15 | Template literal SQL | Customize Fix creates Memory live |
 | Open redirect | 0:15–0:20 | `res.redirect(next)` | Suggested Fix + Autofix PR |
 | Secrets + SSRF | 0:20–0:23 | Hardcoded key + fetch | Two finding types, Memories for both |
