@@ -26,3 +26,9 @@ app.use("/", taskSearchRouter);
 
 const authCallbackRouter = require("./routes/auth-callback");
 app.use("/", authCallbackRouter);
+
+const ciLogsRouter = require("./routes/ci-logs");
+app.use("/", ciLogsRouter);
+
+const taskDetailRouter = require("./routes/task-detail");
+app.use("/", taskDetailRouter);
