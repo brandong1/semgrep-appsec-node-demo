@@ -26,3 +26,6 @@ app.use("/", taskSearchRouter);
 
 const authCallbackRouter = require("./routes/auth-callback");
 app.use("/", authCallbackRouter);
+
+const webhooksRouter = require("./routes/webhooks");
+app.use("/", webhooksRouter);
