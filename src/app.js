@@ -20,3 +20,6 @@ app.listen(PORT, () => {
 });
 
 module.exports = app;
+
+const taskSearchRouter = require("./routes/task-search");
+app.use("/", taskSearchRouter);
