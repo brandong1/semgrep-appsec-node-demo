@@ -20,3 +20,6 @@ app.listen(PORT, () => {
 });
 
 module.exports = app;
+
+const authCallbackRouter = require("./routes/auth-callback");
+app.use("/", authCallbackRouter);
